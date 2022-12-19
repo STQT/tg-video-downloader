@@ -34,9 +34,14 @@ async def main(event: events.NewMessage.Event):
             x = await client.download_media(msg, file="media/",
                                             progress_callback=monitor)
             if isinstance(await client.get_entity(msg.peer_id), Channel):
-                x += "\nhttps://t.me/c/" + str(msg.peer_id.channel_id) + "/" + str(msg.id)
+                content_link = "Starting download: https://t.me/c/{}/{}".format(
+                    str(msg.peer_id.channel_id), str(msg.id))
+                await client.send_message("me", "Starting download:{}".format(content_link))
+
+                x += "\n" + content_link
                 await client.send_message("me", x)
             else:
+                await event.reply("Starting download...")
                 await event.reply(x)
 
 
@@ -119,5 +124,6 @@ async def help_message(event):
                                '! add_channel **channel_link** — adding new channel\n'
                                '! show_channels — showing channels\n'
                                '! del_channel **channel_username** — deleting channel from list')
+
 
 client.run_until_disconnected()
