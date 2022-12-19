@@ -96,7 +96,7 @@ async def add_channel(event):
 
 @client.on(events.NewMessage(outgoing=True, pattern='!show_channels'))
 async def show_channels(event):
-    ch_text = ""
+    ch_text = "Channels:\n"
     ch_list = [i['username'] for i in collchannels.find({})]
     for i in ch_list:
         ch_text += i + "\n"
