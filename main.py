@@ -48,7 +48,6 @@ async def main(event: events.NewMessage.Event):
                 await client.send_message("me", x)
             else:
                 await event.reply("Downloaded...\n"+x)
-                await event.reply(x)
 
 
 @client.on(events.NewMessage(outgoing=True, pattern='!add_text'))
