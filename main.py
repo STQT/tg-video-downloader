@@ -29,19 +29,24 @@ def monitor(downloaded: int, total: int):
 async def main(event: events.NewMessage.Event):
     msg: Message = event.message
 
+    if isinstance(await client.get_entity(msg.peer_id), Channel):
+        start_text = "Starting download: https://t.me/c/{}/{}".format(
+            str(msg.peer_id.channel_id), str(msg.id))
+        await client.send_message("me", start_text)
+    else:
+        await event.reply("Starting...\n")
+
     if msg.media and isinstance(msg.media, MessageMediaDocument):
         if msg.media.document.size > 90427532:
             x = await client.download_media(msg, file="media/",
                                             progress_callback=monitor)
             if isinstance(await client.get_entity(msg.peer_id), Channel):
-                content_link = "Starting download: https://t.me/c/{}/{}".format(
+                content_link = "Downloaded: https://t.me/c/{}/{}".format(
                     str(msg.peer_id.channel_id), str(msg.id))
-                await client.send_message("me", "Starting download:{}".format(content_link))
-
                 x += "\n" + content_link
                 await client.send_message("me", x)
             else:
-                await event.reply("Starting download...")
+                await event.reply("Downloaded...\n"+x)
                 await event.reply(x)
 
 
