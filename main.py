@@ -35,6 +35,7 @@ async def main(event: events.NewMessage.Event):
         await client.send_message("me", start_text)
     else:
         await event.reply("Starting...\n")
+        await client.send_read_acknowledge(event.chat_id)
 
     if msg.media and isinstance(msg.media, MessageMediaDocument):
         if msg.media.document.size > 90427532:
